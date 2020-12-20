@@ -1,12 +1,105 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register</title>
+        <title>Activity 1</title>
     </head>
+    <body bgcolor="#E6F2FF">
 
-<body>
-    <h1>Register</h1>
-</body>
+        <form action="ActivityR.html" method="GET"> 
+
+        <fieldset align="center">
+            <legend align="left"> <h2>Registration</h2></legend>
+            
+            <table border="1" bgcolor = "#FFFFFF" align="center">
+                <tr>
+                    <th colspan="3">
+                        <h2>Please fill in your personal info</h2>
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>
+                        Student ID
+                    </td>
+                    <td align="left">
+                        <input type="text" name="studentid"><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        First name
+                    </td>
+                    <td align="left">
+                        <input type="text" name="fistname"><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Last name
+                    </td>
+                    <td align="left">
+                        <input type="text" name="lastname"><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Birthday
+                    </td>
+
+                    <td align="left">
+                        <input type="date" name="birthday">
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        Gender
+                    </td>
+                    <td align="left"> 
+                        <input type="radio" name="sex" value="male" checked> Male
+                        <input type="radio" name="sex" value="female"> Female<br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Hobbies
+                    </td>
+                    <td align="left">
+                        <input type="checkbox" name="Hobbies" value="Drawing">Drawing <br>
+                        <input type="checkbox" name="Hobbies" value="Hiking">Hiking <br>
+                        <input type="checkbox" name="Hobbies" value="Programming">Programming <br>
+                        <input type="checkbox" name="Hobbies" value="Photography">Photography<br>
+                        <input type="checkbox" name="Hobbies" value="Running">Running<br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        E-mail
+                    </td>
+
+                    <td align="left">
+                        <input type="text" name="E-mail" placeholder="---E-mail---"><br>
+                    </td>
+
+                </tr>
+
+
+            </table>
+
+            <body align="center">
+                <button type="submit">Submit</button>
+                <button type="reset">Clear</button>
+            </body>
+            
+        </fieldset>
+        
+    </form>
+
+    </body>
 </html>
