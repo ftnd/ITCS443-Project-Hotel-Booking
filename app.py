@@ -1,13 +1,13 @@
-from flask import Flask
+from flask import Flask, redirect, url_for, render_template
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Hello, This is the Main page!"
+def home():
+    return render_template("home.html")
 
 @app.route("/register")
 def register():
-    return "Hello, This is the Register page!"
+    return render_template("register.html")
 
 @app.route("/booking")
 def booking():
@@ -20,3 +20,7 @@ def checkin():
 @app.route("/payment")
 def payment():
     return "Hello, This is the Payment page!"
+
+@app.route("/test")
+def test():
+    return "Test Test Test"
