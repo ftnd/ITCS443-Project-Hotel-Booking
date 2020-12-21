@@ -3,9 +3,9 @@ from flask import Flask, redirect, url_for, render_template
 app = Flask(__name__)
 
 @app.route("/")
-def index():
+def home():
     title = ""
-    return render_template("index.html", title = title)
+    return render_template("home.html", title = title)
 
 @app.route("/register")
 def register():
