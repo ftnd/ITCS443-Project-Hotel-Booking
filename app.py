@@ -44,8 +44,8 @@ else:
 def index():
     return render_template("index.html")
 
-@app.route("/register",methods = ['POST', 'GET'])
-def register():
+@app.route("/booking",methods = ['POST', 'GET'])
+def booking():
     if request.method == 'POST':
         
         # Obtain data in Form
@@ -68,7 +68,7 @@ def register():
         rows = cursor.fetchall()
         for row in rows:
     	    print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
-        return render_template("register.html")
+        return render_template("booking.html")
 
 @app.route("/check-in/<name>")
 def checkin():
