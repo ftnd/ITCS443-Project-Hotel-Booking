@@ -56,19 +56,28 @@ def register():
         edate = request.form['EndDate']
 
         # Get rooms from database 
-        cursor.execute("SELECT * FROM room;")
-        rows = cursor.fetchall()
-        for row in rows:
-    	    print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
-
-        
+        # cursor.execute("SELECT * FROM room;")
+        # rows = cursor.fetchall()
+        # for row in rows:
+    	#     print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
         return redirect(url_for('payment'))
     else:
-        cursor.execute("SELECT * FROM room where 'STATUS' = 1")
+        countSingle = 0
+        countDouble = 0
+        countSuite = 0
+        countKing = 0
+        cursor.execute("SELECT * FROM room where 'STATUS' = 0")
         rows = cursor.fetchall()
         for row in rows:
-    	    print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
-        return render_template("register.html")
+    	    if str(row[2]) == 'single':
+                countSingle += 1
+    	    if str(row[2]) == 'double':
+                countDouble += 1
+    	    if str(row[2]) == 'suite':
+                countSuite += 1
+    	    if str(row[2]) == 'king':
+                countKing += 1
+        return render_template("register.html", countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing)
 
 @app.route("/check-in/<name>")
 def checkin():
