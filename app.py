@@ -1,3 +1,6 @@
+# Tanadon Sangkhatorn 6188060
+# Thanyanit Jongjitragan 6188075
+
 from flask import Flask, redirect, url_for, render_template, request
 
 import mysql.connector
