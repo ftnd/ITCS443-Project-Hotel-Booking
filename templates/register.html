@@ -12,7 +12,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- Custom Theme files -->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href="css/style.css" rel="stylesheet" type="text/css" media="all" /> -->
 <!-- //Custom Theme files -->
 <!-- web font -->
 <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -23,18 +23,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="main-w3layouts wrapper">
 		<h1>BOOKING</h1>
 		<div class="main-agileinfo">
-			<div class="agileits-top">
+			<!-- <div class="agileits-top"> -->
+			<div>
 				<form action="index.html" method="post">
-                    <input class="text" type="text" name="Firstname" placeholder="Firstname" required="">
-                    <input class="text" type="text" name="Lastname" placeholder="Lastname" required="">
-                    <input class="input--style-3" type="date" name="Date" placeholder="Date" required="">
+                    <input class="text" type="text" name="Firstname" placeholder="Firstname" required=""> <br><br>
+					<input class="text" type="text" name="Lastname" placeholder="Lastname" required=""><br><br>
+					Check-in <br>
+					<input class="input--style-3" type="date" name="Date" placeholder="Date" required=""> <br><br>
+					Check-out <br> <input class="input--style-3" type="date" name="Date" placeholder="Date" required=""><br><br>
+					<b>Room type</b><br><br>
+					<input type="radio" name="RoomType" value="Single">Single <br>
+					<input type="radio" name="RoomType" value="Double">Double <br>
+					<input type="radio" name="RoomType" value="Suite">Suite <br>
+					<input type="radio" name="RoomType" value="King">King <br>
+
 					<div class="wthree-text">
+						<!-- <select name="Rooms">
+							<option value="small">Small</option>
+							<option value="medium">Medium</option>
+							<option value="large">Large</option>
+						</select> -->
+
 						<!-- <label class="anim">
 							<input type="checkbox" class="checkbox" required="">
 							<span>I Agree To The Terms & Conditions</span>
 						</label> -->
 						<div class="clear"> </div>
 					</div>
+					<br>
 					<input type="submit" value="Submit">
 				</form>
 				<!-- <p>Don't have an Account? <a href="#"> Login Now!</a></p> -->
@@ -45,18 +61,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!-- <p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p> -->
 		</div>
 		<!-- //copyright -->
-		<ul class="colorlib-bubbles">
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
+		<!-- <ul>
+			
+		</ul> -->
 	</div>
 	<!-- //main -->
 </body>
