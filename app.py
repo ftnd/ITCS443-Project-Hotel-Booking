@@ -44,8 +44,8 @@ else:
 def index():
     return render_template("index.html")
 
-@app.route("/register",methods = ['POST', 'GET'])
-def register():
+@app.route("/booking",methods = ['POST', 'GET'])
+def booking():
     if request.method == 'POST':
         
         # Obtain data in Form
@@ -77,7 +77,7 @@ def register():
                 countSuite += 1
     	    if str(row[2]) == 'king':
                 countKing += 1
-        return render_template("register.html", countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing)
+        return render_template("booking.html", countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing)
 
 @app.route("/check-in/<name>")
 def checkin():
