@@ -5,7 +5,7 @@ from mysql.connector import errorcode
 
 app = Flask(__name__)
 
-# Obtain connection string information from the portal
+# Obtain connection string information from Azure portal
 config = {
     'host':'hotelmysql.mysql.database.azure.com',
     'user':'hoteldb060075@hotelmysql',
@@ -15,8 +15,8 @@ config = {
 
 # Construct connection string
 try:
-  conn = mysql.connector.connect(**config)
-  print("Connection established")
+    conn = mysql.connector.connect(**config)
+    print("Connection established")
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
         print("Something is wrong with the user name or password")
@@ -28,13 +28,13 @@ else:
   cursor = conn.cursor()
 
 # Read data
-  # cursor.execute("SELECT * FROM room;")
-  # rows = cursor.fetchall()
-  # print("Read",cursor.rowcount,"row(s) of data.")
+    # cursor.execute("SELECT * FROM room;")
+    # rows = cursor.fetchall()
+    # print("Read",cursor.rowcount,"row(s) of data.")
 
 # Print all rows
-  # for row in rows:
-  # 	print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
+    # for row in rows:
+    # 	print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
 
 @app.route("/")
 @app.route("/index")
@@ -44,29 +44,37 @@ def index():
 @app.route("/register",methods = ['POST', 'GET'])
 def register():
     if request.method == 'POST':
+        
+        # Obtain data in Form
         fname = request.form['Firstname']
-        return redirect(url_for('checkin', name = fname))
-    else:
-        title = "Registration"
-        return render_template("register.html", title = title)
+        lname = request.form['Lastname']
+        roomtype = request.form['RoomType']
+        sdate = request.form['StartDate']
+        edate = request.form['EndDate']
 
-@app.route("/booking")
-def booking():
-    title = ""
-    return "Hello, This is the Booking page!"
+        # Get rooms from database 
+        cursor.execute("SELECT * FROM room;")
+        rows = cursor.fetchall()
+        for row in rows:
+    	    print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
+
+        
+        return redirect(url_for('payment'))
+    else:
+        cursor.execute("SELECT * FROM room where 'STATUS' = 1")
+        rows = cursor.fetchall()
+        for row in rows:
+    	    print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
+        return render_template("register.html")
 
 @app.route("/check-in/<name>")
-def checkin(name=None):
-    return "Hello %s, This is the Checking-in page!" % name
+def checkin():
+    return "Hello, This is the Checking-in page!"
 
 @app.route("/payment")
 def payment():
     title = ""
     return "Hello, This is the Payment page!"
-
-@app.route("/test")
-def test():
-    return "Test Test Test"
 
 
 # Close Database Connection
