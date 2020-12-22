@@ -28,7 +28,7 @@ except mysql.connector.Error as err:
     else:
         print(err)
 else:
-  cursor = conn.cursor()
+    cursor = conn.cursor()
 
 # Read data
     # cursor.execute("SELECT * FROM room;")
