@@ -102,7 +102,7 @@ def payment():
         if result == 0:
             return "Payment fail."
         else:
-            cursor.execute("INSERT INTO reservation ()")
+            # cursor.execute("INSERT INTO reservation ()")
             return "Payment success. Your room is reserved."
     else:
         fname = request.args.get('fname',None)
