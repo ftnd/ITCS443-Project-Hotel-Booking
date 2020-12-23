@@ -96,6 +96,11 @@ def checkin():
 @app.route("/payment",methods = ['POST', 'GET'])
 def payment():
     if request.method == 'POST':
+        fname = request.form['fname']
+        lname = request.form['lname']
+        rid = request.form['rid']
+        sdate = request.form['sdate']
+        edate = request.form['edate']
         cursor.execute("UPDATE room SET status = 1 WHERE 'id' = '"+rid+"' AND 'status' = 'available';")
         rows = cursor.fetchall()
         result = rows.rowcount
