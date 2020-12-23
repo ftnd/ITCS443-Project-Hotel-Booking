@@ -2,7 +2,7 @@
 # Thanyanit Jongjitragan 6188075
 
 from flask import Flask, redirect, url_for, render_template, request
-import flask_mysqldb
+
 from flask_mysqldb import MySQL
 # import mysql.connector
 # from mysql.connector import errorcode
