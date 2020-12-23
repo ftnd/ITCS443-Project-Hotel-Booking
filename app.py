@@ -30,14 +30,14 @@ except mysql.connector.Error as err:
 else:
     cursor = conn.cursor()
 
-# Read data
-    # cursor.execute("SELECT * FROM room;")
-    # rows = cursor.fetchall()
-    # print("Read",cursor.rowcount,"row(s) of data.")
+# # Read data
+# cursor.execute("SELECT * FROM room;")
+# rows = cursor.fetchall()
+# print("Read",cursor.rowcount,"row(s) of data.")
 
-# Print all rows
-    # for row in rows:
-    # 	print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
+# # Print all rows
+# for row in rows:
+#     print("Data row = (%s, %s, %s, %s)" %( str(row[0]), str(row[1]), str(row[2]), str(row[3]) ))
 
 @app.route("/")
 @app.route("/index")
@@ -56,40 +56,59 @@ def booking():
         edate = request.form['EndDate']
 
         # Get rooms from database 
-        # cursor.execute("SELECT * FROM room;")
-        # rows = cursor.fetchall()
-        # for row in rows:
-    	#     print("Data row = (%s, %s)" %( str(row[0]), str(row[1]) ))
-        return redirect(url_for('payment'))
+        cursor.execute("SELECT * FROM room where status = 0 AND name = LOWER('"+roomtype+"')")
+        rows = cursor.fetchall()
+        print("Read",cursor.rowcount,"row(s) of data.")
+        rid = -1
+        for row in rows:
+            rid = int(str(row[0]))
+            break
+        if rid == -1:
+            return render_template("booking.html", err = -1, msg = "Selected room is unavailable.")
+        return redirect(url_for('payment', rid = rid))
     else:
-        countSingle = 0
-        countDouble = 0
-        countSuite = 0
-        countKing = 0
-        cursor.execute("SELECT * FROM room where 'STATUS' = 0")
+        countSingle = 0; countDouble = 0; countSuite = 0; countKing = 0
+        priceSingle = -1; priceDouble = -1; priceSuite = -1; priceKing= -1
+        cursor.execute("SELECT * FROM room WHERE status = 'available'")
         rows = cursor.fetchall()
         for row in rows:
-    	    if str(row[2]) == 'single':
+    	    if str(row[1]) == 'single':
                 countSingle += 1
-    	    if str(row[2]) == 'double':
+                priceSingle = str(row[2])
+    	    if str(row[1]) == 'double':
                 countDouble += 1
-    	    if str(row[2]) == 'suite':
+                priceDouble = str(row[2])
+    	    if str(row[1]) == 'suite':
                 countSuite += 1
-    	    if str(row[2]) == 'king':
+                priceSuite = str(row[2])
+    	    if str(row[1]) == 'king':
                 countKing += 1
-        return render_template("booking.html", countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing)
+                priceKing = str(row[2])
+        return render_template( "booking.html",
+                countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing,
+                priceSingle = priceSingle, priceDouble = priceDouble, priceSuite = priceSuite, priceKing = priceKing
+            )
 
-@app.route("/check-in/<name>")
+@app.route("/check-in")
 def checkin():
     return "Hello, This is the Checking-in page!"
 
-@app.route("/payment")
-def payment():
-    title = ""
-    return "Hello, This is the Payment page!"
+@app.route("/payment/<rid>",methods = ['POST', 'GET'])
+def payment(rid):
+    if request.method == 'POST':
+        cursor.execute("UPDATE room SET status = 1 WHERE 'id' = '"+rid+"' AND 'status' = 0;")
+        rows = cursor.fetchall()
+        result = rows.rowcount
+        if result == 0:
+            return "Payment fail."
+        else:
+            cursor.execute("INSERT INTO reservation ()")
+            return "Payment success. Your room is reserved."
+    else:
+        return "Hello %s, This is the Payment page!" %rid
 
 
-# Close Database Connection
+# # Close Database Connection
 # conn.commit()
 # cursor.close()
 # conn.close()
