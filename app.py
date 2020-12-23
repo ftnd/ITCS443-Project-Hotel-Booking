@@ -49,11 +49,11 @@ def booking():
     if request.method == 'POST':
         
         # Obtain data in Form
-        fname = request.form['Firstname']
-        lname = request.form['Lastname']
+        fname = request.form['firstname']
+        lname = request.form['lastname']
         roomtype = request.form['RoomType']
-        sdate = request.form['StartDate']
-        edate = request.form['EndDate']
+        sdate = request.form['startDate']
+        edate = request.form['endDate']
 
         # Get rooms from database 
         cursor.execute("SELECT * FROM room where status = 'available' AND name = LOWER('"+roomtype+"')")
