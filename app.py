@@ -2,41 +2,41 @@
 # Thanyanit Jongjitragan 6188075
 
 from flask import Flask, redirect, url_for, render_template, request
-# import flask_mysqldb
-# from flask_mysqldb import MySQL
-import mysql.connector
-from mysql.connector import errorcode
+import flask_mysqldb
+from flask_mysqldb import MySQL
+# import mysql.connector
+# from mysql.connector import errorcode
 
 app = Flask(__name__)
 
-# Obtain connection string information from Azure portal
-config = {
-    'host':'hotelmysql.mysql.database.azure.com',
-    'user':'hoteldb060075@hotelmysql',
-    'password':'Admin060075',
-    'database':'hoteldb'
-}
+# # Obtain connection string information from Azure portal
+# config = {
+#     'host':'hotelmysql.mysql.database.azure.com',
+#     'user':'hoteldb060075@hotelmysql',
+#     'password':'Admin060075',
+#     'database':'hoteldb'
+# }
 
-# Construct connection string
-try:
-    conn = mysql.connector.connect(**config)
-    print("Connection established")
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("Something is wrong with the user name or password")
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
-    else:
-        print(err)
-else:
-    cursor = conn.cursor()
+# # Construct connection string
+# try:
+#     conn = mysql.connector.connect(**config)
+#     print("Connection established")
+# except mysql.connector.Error as err:
+#     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+#         print("Something is wrong with the user name or password")
+#     elif err.errno == errorcode.ER_BAD_DB_ERROR:
+#         print("Database does not exist")
+#     else:
+#         print(err)
+# else:
+#     cursor = conn.cursor()
 
-# app.config['MYSQL_HOST'] = 'hotelmysql.mysql.database.azure.com'
-# app.config['MYSQL_USER'] = 'hoteldb060075@hotelmysql'
-# app.config['MYSQL_PASSWORD'] = 'Admin060075'
-# app.config['MYSQL_DB'] = 'hoteldb'
+app.config['MYSQL_HOST'] = 'hotelmysql.mysql.database.azure.com'
+app.config['MYSQL_USER'] = 'hoteldb060075@hotelmysql'
+app.config['MYSQL_PASSWORD'] = 'Admin060075'
+app.config['MYSQL_DB'] = 'hoteldb'
  
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
 # # Read data
 # cursor.execute("SELECT * FROM room;")
@@ -55,7 +55,7 @@ def index():
 @app.route("/booking",methods = ['POST', 'GET'])
 def booking():
     if request.method == 'POST':
-        # cursor = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
         # Obtain data in Form
         fname = request.form['firstname']
         lname = request.form['lastname']
@@ -66,8 +66,8 @@ def booking():
         # Get rooms from database 
         cursor.execute("SELECT * FROM room where status = 'available' AND name = LOWER('"+roomtype+"')")
         rows = cursor.fetchall()
-        # mysql.connection.commit()
-        # cursor.close()
+        mysql.connection.commit()
+        cursor.close()
         print("Read",cursor.rowcount,"row(s) of data.")
         rid = -1
         for row in rows:
@@ -77,13 +77,13 @@ def booking():
             return render_template("booking.html", err = -1, msg = "Selected room is unavailable.")
         return redirect(url_for('payment', fname = fname, lname = lname, rid = rid, sdate = sdate, edate = edate))
     else:
-        # cursor = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
         countSingle = 0; countDouble = 0; countSuite = 0; countKing = 0
         priceSingle = -1; priceDouble = -1; priceSuite = -1; priceKing= -1
         cursor.execute("SELECT * FROM room WHERE status = 'available'")
         rows = cursor.fetchall()
-        # mysql.connection.commit()
-        # cursor.close()
+        mysql.connection.commit()
+        cursor.close()
         for row in rows:
     	    if str(row[1]) == 'single':
                 countSingle += 1
@@ -109,7 +109,7 @@ def checkin():
 @app.route("/payment",methods = ['POST', 'GET'])
 def payment():
     if request.method == 'POST':
-        # cursor = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
         fname = request.form['fname']
         lname = request.form['lname']
         rid = request.form['rid']
@@ -117,8 +117,8 @@ def payment():
         edate = request.form['edate']
         cursor.execute("UPDATE room SET status = 1 WHERE 'id' = '"+rid+"' AND 'status' = 'available';")
         rows = cursor.fetchall()
-        # mysql.connection.commit()
-        # cursor.close()
+        mysql.connection.commit()
+        cursor.close()
         result = rows.rowcount
         if result == 0:
             return "Payment fail."
