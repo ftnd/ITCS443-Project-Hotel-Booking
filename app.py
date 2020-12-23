@@ -56,16 +56,16 @@ def booking():
         edate = request.form['EndDate']
 
         # Get rooms from database 
-        cursor.execute("SELECT * FROM room where status = 0 AND name = LOWER('"+roomtype+"')")
+        cursor.execute("SELECT * FROM room where status = 'available' AND name = LOWER('"+roomtype+"')")
         rows = cursor.fetchall()
         print("Read",cursor.rowcount,"row(s) of data.")
         rid = -1
         for row in rows:
             rid = int(str(row[0]))
             break
-        if rid == -1:
+        if cursor.rowcount == 0:
             return render_template("booking.html", err = -1, msg = "Selected room is unavailable.")
-        return redirect(url_for('payment', rid = rid))
+        return redirect(url_for('payment', fname = fname, lname = lname, rid = rid, sdate = sdate, edate = edate))
     else:
         countSingle = 0; countDouble = 0; countSuite = 0; countKing = 0
         priceSingle = -1; priceDouble = -1; priceSuite = -1; priceKing= -1
@@ -93,10 +93,10 @@ def booking():
 def checkin():
     return "Hello, This is the Checking-in page!"
 
-@app.route("/payment/<rid>",methods = ['POST', 'GET'])
-def payment(rid):
+@app.route("/payment",methods = ['POST', 'GET'])
+def payment():
     if request.method == 'POST':
-        cursor.execute("UPDATE room SET status = 1 WHERE 'id' = '"+rid+"' AND 'status' = 0;")
+        cursor.execute("UPDATE room SET status = 1 WHERE 'id' = '"+rid+"' AND 'status' = 'available';")
         rows = cursor.fetchall()
         result = rows.rowcount
         if result == 0:
@@ -105,7 +105,12 @@ def payment(rid):
             cursor.execute("INSERT INTO reservation ()")
             return "Payment success. Your room is reserved."
     else:
-        return "Hello %s, This is the Payment page!" %rid
+        fname = request.args.get('fname',None)
+        lname = request.args.get('lname',None)
+        rid = request.args.get('rid', None)
+        sdate = request.args.get('sdate',None)
+        edate = request.args.get('edate',None)
+        return "This is the Payment page!<br>Customer: %s %s<br>Room ID: %s<br>From: %s  To: %s" %(fname,lname,rid,sdate,edate)
 
 
 # # Close Database Connection

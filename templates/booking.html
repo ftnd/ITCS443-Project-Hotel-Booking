@@ -19,14 +19,14 @@
 					Check-in <br>
 					<input class="input--style-3" type="date" name="StartDate" placeholder="From date" required=""> <br><br>
 					Check-out <br>
-					<input class="input--style-3" type="date" name="EndDate" placeholder="To date" required=""> <br><br>
+					<input class="input--style-3" type="date" name="EndDate" placeholder="To date" min=StartDate required=""> <br><br>
 
 					<b>Room type</b><br><br>
 
-					<input type="radio" name="RoomType" value="Single">Single <br>
-					<input type="radio" name="RoomType" value="Double">Double <br>
-					<input type="radio" name="RoomType" value="Suite">Suite <br>
-					<input type="radio" name="RoomType" value="King">King <br>					
+					<input type="radio" name="RoomType" value="Single">Single [{{priceSingle}}฿]: {{countSingle}} rooms available<br>
+					<input type="radio" name="RoomType" value="Double">Double [{{priceDouble}}฿]: {{countDouble}} rooms available <br>
+					<input type="radio" name="RoomType" value="Suite">Suite [{{priceSuite}}฿]: {{countSuite}} rooms available <br>
+					<input type="radio" name="RoomType" value="King">King [{{priceKing}}฿]: {{countKing}} rooms available <br>					
 					<br>
 					<input type="submit" value="Submit">
 				</form>
