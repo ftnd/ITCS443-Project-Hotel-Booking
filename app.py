@@ -18,7 +18,7 @@ mysql = MySQL(app)
 @app.route("/")
 @app.route("/index")
 def index():
-    # cursor = mysql.connection.cursor()
+    cursor = mysql.connection.cursor()
     # cursor.execute("ALTER TABLE reservation ADD dateBook DATE")
     # cursor.execute("UPDATE reservation SET dateBook = '2020-11-01' WHERE id = '1'")
     # cursor.execute("SELECT * FROM reservation")
@@ -26,13 +26,14 @@ def index():
     # mysql.connection.commit()
     # cursor.close()
     # print("Read",cursor.rowcount,"row(s) of data.")
+    # print(rows)
     # for row in rows:
     #     print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" "+str(row[6])+" ")
     
     return render_template("index.html")
 
 @app.route("/bookdate",methods = ['POST', 'GET'])
-def bookdate():
+def dateBook():
     if request.method == 'POST':
         sdate = request.form['startDate']
         edate = request.form['endDate']
@@ -170,6 +171,83 @@ def payment():
 def report():
     return render_template("report.html")
 
+@app.route("/perday",methods = ['POST', 'GET'])
+def perday():
+    if request.method == 'POST':
+        date = request.form['startDate']
+        single = 0; double = 0; suite = 0; king = 0; total = 0
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM reservation WHERE dateBook = '"+date+"';")
+        rows = cursor.fetchall()
+        mysql.connection.commit()
+        cursor.close()
+
+        for row in rows:
+            rid = str(row[3])
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT * FROM room WHERE id = '"+rid+"';")
+            roomlist = cursor.fetchall()
+            mysql.connection.commit()
+            cursor.close()
+            for room in roomlist:
+                if rid == str(room[0]):
+                    name = str(room[1])
+                    if name == "single":
+                        single += 1
+                    elif name == "double":
+                        double += 1
+                    elif name == "suite":
+                        suite += 1
+                    elif name == "king":
+                        king += 1
+                    break
+        total = single + double + suite + king
+        return " "+str(single)+" "+str(double)+" "+str(suite)+" "+str(king)+" "+str(total)+" "
+        # single=single,double=double,suite=suite,king=king,total=total,date=date
+    else:
+        return render_template("report.html")
+
+@app.route("/permonth",methods = ['POST', 'GET'])
+def permonth():
+    if request.method == 'POST':
+        date = request.form['permonth'] + "-01"
+        single = 0; double = 0; suite = 0; king = 0; total = 0
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM reservation WHERE MONTH(dateBook) = MONTH('"+date+"') AND YEAR(dateBook) = YEAR('"+date+"');")
+        rows = cursor.fetchall()
+        mysql.connection.commit()
+        cursor.close()
+
+        for row in rows:
+            rid = str(row[3])
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT * FROM room WHERE id = '"+rid+"';")
+            roomlist = cursor.fetchall()
+            mysql.connection.commit()
+            cursor.close()
+            for room in roomlist:
+                if rid == str(room[0]):
+                    name = str(room[1])
+                    if name == "single":
+                        single += 1
+                    elif name == "double":
+                        double += 1
+                    elif name == "suite":
+                        suite += 1
+                    elif name == "king":
+                        king += 1
+                    break
+        total = single + double + suite + king
+        return " "+str(single)+" "+str(double)+" "+str(suite)+" "+str(king)+" "+str(total)+" "
+        # single=single,double=double,suite=suite,king=king,total=total,date=date
+    else:
+        return render_template("report.html")
+
+@app.route("/roomstat")
+def roomstat():
+    return render_template("report.html")
 
 if __name__ == '__main__':
     app.run()
