@@ -119,7 +119,7 @@ def payment():
             return "payment fail"
         else:
             # cursor.execute("INSERT INTO reservation ()")
-            return "reservation success"
+            return render_template("payment-successful.html")
     
     else:
         fname = request.args.get('fname',None)
