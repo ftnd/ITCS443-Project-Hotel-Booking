@@ -25,19 +25,7 @@ mysql = MySQL(app)
     
 @app.route("/")
 @app.route("/index")
-def index():
-    cursor = mysql.connection.cursor()
-    # cursor.execute("ALTER TABLE reservation ADD dateBook DATE")
-    # cursor.execute("UPDATE reservation SET dateBook = '2020-11-01' WHERE id = '1'")
-    # cursor.execute("SELECT * FROM reservation")
-    # rows = cursor.fetchall()
-    # mysql.connection.commit()
-    # cursor.close()
-    # print("Read",cursor.rowcount,"row(s) of data.")
-    # print(rows)
-    # for row in rows:
-    #     print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" "+str(row[6])+" ")
-    
+def index():    
     return render_template("index.html")
 
 @app.route("/bookdate",methods = ['POST', 'GET'])
