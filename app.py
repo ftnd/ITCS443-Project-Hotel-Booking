@@ -127,7 +127,7 @@ def checkin():
 
         if cursor.rowcount == 1:
             for row in rows:
-                msg = "Check-in SUCCESS. Your room number is "+str(row[3])+". Please check-out before "+str(row[5])+". Enjoy your stay!"
+                msg = "Check-in SUCCESS. Your room number is "+str(row[3])+". Please check-out within "+str(row[5])+". Enjoy your stay!"
         else:
             err = "Check-in fail"
             
