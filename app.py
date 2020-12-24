@@ -3,6 +3,14 @@
 
 from flask import Flask, redirect, url_for, render_template, request
 from flask_mysqldb import MySQL
+from datetime import datetime
+
+# Function to calculate day differrent between two dates (YYYY-MM-DD)
+def days_count(d1, d2):
+    d1 = datetime.strptime(d1, "%Y-%m-%d")
+    d2 = datetime.strptime(d2, "%Y-%m-%d")
+    # +1 to count one more days: from days 24 to 25 --> |(25-24)| + 1 = 2 days
+    return abs((d2 - d1).days)+1
 
 app = Flask(__name__)
 
@@ -169,10 +177,12 @@ def payment():
 
 @app.route("/report")
 def report():
-    return render_template("report.html")
+    pdc = ""; pmc = ""; rsc = ""
+    return render_template("report.html",perdaycode=pdc,permonthcode=pmc,roomstatcode=rsc)
 
 @app.route("/perday",methods = ['POST', 'GET'])
 def perday():
+    pdc = ""; pmc = ""; rsc = ""
     if request.method == 'POST':
         date = request.form['startDate']
         single = 0; double = 0; suite = 0; king = 0; total = 0
@@ -203,15 +213,24 @@ def perday():
                         king += 1
                     break
         total = single + double + suite + king
-        return " "+str(single)+" "+str(double)+" "+str(suite)+" "+str(king)+" "+str(total)+" "
-        # single=single,double=double,suite=suite,king=king,total=total,date=date
-    else:
-        return render_template("report.html")
+
+        pdc = "<tr><td>DATE:"+str(date)+"<br><br>"
+        pdc += "<b>Total booking of each room type</b><br>"
+        pdc += "Single: "+str(single)+"<br>"
+        pdc += "Double: "+str(double)+"<br>"
+        pdc += "Suite: "+str(suite)+"<br>"
+        pdc += "King: "+str(king)+"<br><br>"
+        pdc += "Total booking: "+str(total)
+        pdc += "</td></tr>"
+    
+    return render_template("report.html",perdaycode=pdc,permonthcode=pmc,roomstatcode=rsc)
 
 @app.route("/permonth",methods = ['POST', 'GET'])
 def permonth():
+    pdc = ""; pmc = ""; rsc = ""
     if request.method == 'POST':
         date = request.form['permonth'] + "-01"
+        yearmonth = request.form['permonth']
         single = 0; double = 0; suite = 0; king = 0; total = 0
 
         cursor = mysql.connection.cursor()
@@ -240,14 +259,68 @@ def permonth():
                         king += 1
                     break
         total = single + double + suite + king
-        return " "+str(single)+" "+str(double)+" "+str(suite)+" "+str(king)+" "+str(total)+" "
-        # single=single,double=double,suite=suite,king=king,total=total,date=date
-    else:
-        return render_template("report.html")
 
-@app.route("/roomstat")
+        pmc = "<tr><td>YEAR-MONTH:"+str(yearmonth)+"<br><br>"
+        pmc += "<b>Total booking of each room type</b><br>"
+        pmc += "Single: "+str(single)+"<br>"
+        pmc += "Double: "+str(double)+"<br>"
+        pmc += "Suite: "+str(suite)+"<br>"
+        pmc += "King: "+str(king)+"<br><br>"
+        pmc += "Total booking: "+str(total)
+        pmc += "</td></tr>"
+    
+    return render_template("report.html",perdaycode=pdc,permonthcode=pmc,roomstatcode=rsc)
+
+@app.route("/roomstat",methods = ['POST', 'GET'])
 def roomstat():
-    return render_template("report.html")
+    pdc = ""; pmc = ""; rsc = ""
+    if request.method == 'POST':
+        sdate = request.form['sdate']
+        edate = request.form['edate']
+
+        single = 0; double = 0; suite = 0; king = 0; total = 0
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM reservation WHERE startDate <= '"+edate+"' AND endDate >= '"+sdate+"';")
+        rows = cursor.fetchall()
+        mysql.connection.commit()
+        cursor.close()
+        
+        for row in rows:
+            rid = str(row[3])
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT * FROM room WHERE id = '"+rid+"';")
+            roomlist = cursor.fetchall()
+            mysql.connection.commit()
+            cursor.close()
+            for room in roomlist:
+                if rid == str(room[0]):
+                    name = str(room[1])
+                    diff = days_count(str(row[4]),str(row[5]))
+                    diff = min(diff, days_count(str(row[4]),edate))
+                    diff = min(diff, days_count(sdate,str(row[5])))
+                    diff = min(diff, days_count(sdate,edate))
+                    if name == "single":
+                        single += diff
+                    elif name == "double":
+                        double += diff
+                    elif name == "suite":
+                        suite += diff
+                    elif name == "king":
+                        king += diff
+                    break
+        total = single + double + suite + king
+
+        rsc = "<tr><td>From: "+str(sdate)+"<br>To: "+str(edate)+"<br><br>"
+        rsc += "<b>The number of days these room types have been booked for</b><br>"
+        rsc += "Single: "+str(single)+"<br>"
+        rsc += "Double: "+str(double)+"<br>"
+        rsc += "Suite: "+str(suite)+"<br>"
+        rsc += "King: "+str(king)+"<br><br>"
+        rsc += "Total day of all rooms: "+str(total)
+        rsc += "</td></tr>"
+    
+    return render_template("report.html",perdaycode=pdc,permonthcode=pmc,roomstatcode=rsc)
 
 if __name__ == '__main__':
     app.run()

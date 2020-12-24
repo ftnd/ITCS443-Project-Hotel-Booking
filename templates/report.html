@@ -35,7 +35,7 @@
         <form action="/perday" method="post">
             <!-- <fieldset align="center"> -->
                 <table border="1" bgcolor = "#FFFFFF" align="center">
-                    <tr><th>BOOKING PER DAY</th></tr>
+                    <tr><th>SUMMARY OF BOOKING PER DAY</th></tr>
                     <tr>
                         <td>
                             <label for="startDate">Select date:</label>
@@ -43,6 +43,7 @@
                             <input type="submit">
                         </td>
                     </tr>
+                    {{perdaycode | safe}}
                 </table>
                 <br>
             <!-- </fieldset> -->
@@ -51,14 +52,15 @@
         <form action="/permonth" method="post">
             <!-- <fieldset align="center"> -->
                 <table border="1" bgcolor = "#FFFFFF" align="center">
-                    <tr><th>BOOKING PER MONTH<br></th></tr>
+                    <tr><th>SUMMARY OF BOOKING PER MONTH<br></th></tr>
                     <tr>
                         <td>
                             <label for="permonth">Select month:</label>
                             <input type="month" id="permonth" name="permonth" required>
                             <input type="submit">
                         </td>
-                    </tr>                    
+                    </tr>
+                    {{permonthcode | safe}}              
                 </table>
                 <br>
             <!-- </fieldset> -->
@@ -67,7 +69,7 @@
         <form action="/roomstat" method="post">
             <!-- <fieldset align="center"> -->
                 <table border="1" bgcolor = "#FFFFFF" align="center">
-                    <tr><th colspan="2">STATISTICS OF ROOM BOOKING</th></tr>
+                    <tr><th colspan="2">STATISTICS OF DAY RESERVATION</th></tr>
                     <tr align="center">
                         <td>
                             <label for="sdate">From date:</label>
@@ -83,6 +85,7 @@
                             <input type="date" id="edate" name="edate" required>
                         </td>
                     </tr>
+                    {{roomstatcode | safe}}
                 </table>
                 <br>
             <!-- </fieldset> -->
