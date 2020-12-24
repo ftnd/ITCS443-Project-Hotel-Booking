@@ -39,32 +39,19 @@
                         <b><p class = 'font-freestyle-script' style="font-size:50px">Payment</p></b>
                     </th>
                 </tr>
+                <input type="hidden" name="firstname" value = "{{fname}}" required>
+                <input type="hidden" name="lastname" value = "{{lname}}" required>
+                <input type="hidden" name="startDate" value = "{{sdate}}" required>
+                <input type="hidden" name="endDate" value = "{{edate}}" required>
+                <input type="hidden" name="roomNO" value="{{rid}}">
                 <tr>
-                    <td align="left">
-                        <input type="text" name="firstname" value = "{{fname}}" required><br>
+                    <td align="left" colspan="3">
+                        Firstname: {{fname}}<br>
+                        Lastname: {{lname}}<br>
+                        From: {{sdate}}<br>
+                        To: {{edate}}<br>
                     </td>
                 </tr>
-                <tr>
-                    <td align="left">
-                        <input type="text" name="lastname" value = "{{lname}}" required><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        <input type="text" name="startDate" value = "{{sdate}}" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        <input type="text" name="endDate" value = "{{edate}}" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        <input type="text" name="roomNO" value="{{rid}}">
-                    </td>
-                </tr>
-
                 <tr>
                     <td>
                         Card Number

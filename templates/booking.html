@@ -45,7 +45,7 @@
                             Check-in date
                         </td>
                         <td align="left">
-                            <input type="date" name="startDate" required>
+                            <input type="date" name="startDate" value="{{sdate}}">
                         </td>
                     </tr>
                     <tr>
@@ -54,7 +54,7 @@
                         </td>
     
                         <td align="left">
-                            <input type="date" name="endDate" required>
+                            <input type="date" name="endDate" value="{{edate}}">
                         </td>
                     </tr>
                 </table>
@@ -79,7 +79,7 @@
                         First name
                     </td>
                     <td align="left">
-                        <input type="text" name="firstname" pattern="[a-zA-Z]+" title="First name must contain only letters"><br>
+                        <input type="text" name="firstname" value="{{fname}}" pattern="[a-zA-Z]+" title="First name must contain only letters" required><br>
                     </td>
                 </tr>
                 <tr>
@@ -87,24 +87,7 @@
                         Last name
                     </td>
                     <td align="left">
-                        <input type="text" name="lastname" pattern="[a-zA-Z]+" title="Last name must contain only letters"><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Check-in date
-                    </td>
-                    <td align="left">
-                        <input type="date" name="startDate">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Check-out date
-                    </td>
-
-                    <td align="left">
-                        <input type="date" name="endDate">
+                        <input type="text" name="lastname" value="{{lname}}" pattern="[a-zA-Z]+" title="Last name must contain only letters" required><br>
                     </td>
                 </tr>
                 <tr>
@@ -112,15 +95,20 @@
                         Room type
                     </td>
                     <td align="left">
-                        <input type="radio" name="RoomType" value="Single">Single [{{priceSingle}}฿]: {{countSingle}} rooms available<br>
-                        <input type="radio" name="RoomType" value="Double">Double [{{priceDouble}}฿]: {{countDouble}} rooms available<br>
-                        <input type="radio" name="RoomType" value="Suite">Suite [{{priceSuite}}฿]: {{countSuite}} rooms available<br>
-                        <input type="radio" name="RoomType" value="King">King [{{priceKing}}฿]: {{countKing}} rooms available<br>
+                        <input type="radio" name="RoomType" value="Single" required>Single [{{priceSingle}}฿]: {{countSingle}} rooms available<br>
+                        <input type="radio" name="RoomType" value="Double" required>Double [{{priceDouble}}฿]: {{countDouble}} rooms available<br>
+                        <input type="radio" name="RoomType" value="Suite" required>Suite [{{priceSuite}}฿]: {{countSuite}} rooms available<br>
+                        <input type="radio" name="RoomType" value="King" required>King [{{priceKing}}฿]: {{countKing}} rooms available<br>
                     </td>
                 </tr>
+                <!-- Check In Date -->
+                <input type="hidden" name="startDate" value="{{sdate}}">
+                <!-- Check Out Date -->
+                <input type="hidden" name="endDate" value="{{edate}}">
             </table>
             <br>
             <body align="center">
+                <p style="color:red">{{msg}}</p>
                 <button type="submit" class="button1">Submit</button>
                 <button type="reset" class="button1">Clear</button>
             </body>

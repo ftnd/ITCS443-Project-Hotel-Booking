@@ -14,17 +14,18 @@ app.config['MYSQL_DB'] = 'hoteldb'
 mysql = MySQL(app)
 
 
+    
 @app.route("/")
 @app.route("/index")
 def index():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM room")
-    rows = cursor.fetchall()
-    mysql.connection.commit()
-    cursor.close()
-    print("Read",cursor.rowcount,"row(s) of data.")
-    for row in rows:
-        print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" ")
+    # cursor = mysql.connection.cursor()
+    # cursor.execute("SELECT * FROM room")
+    # rows = cursor.fetchall()
+    # mysql.connection.commit()
+    # cursor.close()
+    # print("Read",cursor.rowcount,"row(s) of data.")
+    # for row in rows:
+    #     print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" ")
     
     return render_template("index.html")
 
@@ -39,6 +40,7 @@ def bookdate():
 
 @app.route("/booking",methods = ['POST', 'GET'])
 def booking():
+    msg = ""
     if request.method == 'POST':
         # Obtain data in Form
         fname = request.form['firstname']
@@ -49,55 +51,65 @@ def booking():
 
         # Get rooms from database 
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM room where status = 'available' AND name = LOWER('"+roomtype+"')")
+        cursor.execute("SELECT * FROM room WHERE name = '"+roomtype+"' AND id NOT IN (SELECT rid FROM reservation WHERE startDate < '"+edate+"' AND endDate > '"+sdate+"');")
         rows = cursor.fetchall()
         mysql.connection.commit()
         cursor.close()
-        print("Read",cursor.rowcount,"row(s) of data.")
+        print("Read",cursor.rowcount,"row(s) of available room for selected date range.")
 
-        rid = -1
-        for row in rows:
-            rid = int(str(row[0]))
-            break
         if cursor.rowcount == 0:
-            return render_template("booking.html", err = -1, msg = "Selected room is unavailable.")
-        return redirect(url_for('payment', fname = fname, lname = lname, rid = rid, sdate = sdate, edate = edate))
+            msg = "No "+roomtype+" is available for the selected date range."
+            
+        else:
+            # Get room number
+            rid = -1
+            for row in rows:
+                rid = int(str(row[0]))
+                break
+            return redirect(url_for('payment', fname = fname, lname = lname, rid = rid, sdate = sdate, edate = edate))
     
+    countSingle = 0; countDouble = 0; countSuite = 0; countKing = 0
+    priceSingle = -1; priceDouble = -1; priceSuite = -1; priceKing= -1
+    fname = ''; lname = ''; sdate = ''; edate = ''
+    if request.method == 'POST':
+        fname = request.form['firstname']
+        lname = request.form['lastname']
+        sdate = request.form['startDate']
+        edate = request.form['endDate']
     else:
-        countSingle = 0; countDouble = 0; countSuite = 0; countKing = 0
-        priceSingle = -1; priceDouble = -1; priceSuite = -1; priceKing= -1
         sdate = request.args.get('sdate',None)
         edate = request.args.get('edate',None)
 
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM room WHERE id NOT IN (SELECT rid FROM reservation WHERE startDate < '"+edate+"' AND endDate > '"+sdate+"');")
-        rows = cursor.fetchall()
-        mysql.connection.commit()
-        cursor.close()
-        print("Read",cursor.rowcount,"row(s) of available room.")
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM room WHERE id NOT IN (SELECT rid FROM reservation WHERE startDate < '"+edate+"' AND endDate > '"+sdate+"');")
+    rows = cursor.fetchall()
+    mysql.connection.commit()
+    cursor.close()
+    print("Read",cursor.rowcount,"row(s) of available room.")
 
-        for row in rows:
-    	    if str(row[1]) == 'single':
-                countSingle += 1
-                priceSingle = str(row[2])
-    	    if str(row[1]) == 'double':
-                countDouble += 1
-                priceDouble = str(row[2])
-    	    if str(row[1]) == 'suite':
-                countSuite += 1
-                priceSuite = str(row[2])
-    	    if str(row[1]) == 'king':
-                countKing += 1
-                priceKing = str(row[2])
-        
-        return render_template( "booking.html",
-                countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing,
-                priceSingle = priceSingle, priceDouble = priceDouble, priceSuite = priceSuite, priceKing = priceKing
-            )
+    for row in rows:
+        if str(row[1]) == 'single':
+            countSingle += 1
+            priceSingle = str(row[2])
+        if str(row[1]) == 'double':
+            countDouble += 1
+            priceDouble = str(row[2])
+        if str(row[1]) == 'suite':
+            countSuite += 1
+            priceSuite = str(row[2])
+        if str(row[1]) == 'king':
+            countKing += 1
+            priceKing = str(row[2])
+    
+    return render_template( "booking.html",
+            countSingle = countSingle, countDouble = countDouble, countSuite = countSuite, countKing = countKing,
+            priceSingle = priceSingle, priceDouble = priceDouble, priceSuite = priceSuite, priceKing = priceKing,
+            fname = fname, lname = lname,sdate = sdate, edate = edate, msg = msg
+        )
 
 @app.route("/check-in")
 def checkin():
-    return "Hello, This is the Checking-in page!"
+    return render_template("check-in.html")
 
 @app.route("/payment",methods = ['POST', 'GET'])
 def payment():
@@ -109,17 +121,16 @@ def payment():
         edate = request.form['endDate']
 
         cursor = mysql.connection.cursor()
-        cursor.execute("UPDATE room SET status = 'reserved' WHERE 'id' = '"+rid+"' AND 'status' = 'available';")
+        cursor.execute("INSERT INTO reservation (fname,lname,rid,startDate,endDate) VALUES ('"+fname+"','"+lname+"','"+rid+"','"+sdate+"','"+edate+"')")
+        print("INSERT",cursor.rowcount,"row(s) of reservation.")
+        cursor.execute("SELECT * FROM reservation")
         rows = cursor.fetchall()
-        result = cursor.rowcount
         mysql.connection.commit()
         cursor.close()
+        for row in rows:
+            print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" ")
 
-        if result == 0:
-            return "payment fail"
-        else:
-            # cursor.execute("INSERT INTO reservation ()")
-            return render_template("payment-successful.html")
+        return render_template("payment-successful.html")
     
     else:
         fname = request.args.get('fname',None)
