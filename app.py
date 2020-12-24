@@ -19,13 +19,15 @@ mysql = MySQL(app)
 @app.route("/index")
 def index():
     # cursor = mysql.connection.cursor()
-    # cursor.execute("SELECT * FROM room")
+    # cursor.execute("ALTER TABLE reservation ADD dateBook DATE")
+    # cursor.execute("UPDATE reservation SET dateBook = '2020-11-01' WHERE id = '1'")
+    # cursor.execute("SELECT * FROM reservation")
     # rows = cursor.fetchall()
     # mysql.connection.commit()
     # cursor.close()
     # print("Read",cursor.rowcount,"row(s) of data.")
     # for row in rows:
-    #     print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" ")
+    #     print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" "+str(row[6])+" ")
     
     return render_template("index.html")
 
@@ -141,7 +143,7 @@ def payment():
         edate = request.form['endDate']
 
         cursor = mysql.connection.cursor()
-        cursor.execute("INSERT INTO reservation (fname,lname,rid,startDate,endDate) VALUES ('"+fname+"','"+lname+"','"+rid+"','"+sdate+"','"+edate+"')")
+        cursor.execute("INSERT INTO reservation (fname,lname,rid,startDate,endDate,dateBook) VALUES ('"+fname+"','"+lname+"','"+rid+"','"+sdate+"','"+edate+"',CURDATE())")
         print("INSERT",cursor.rowcount,"row(s) of reservation.")
         cursor.execute("SELECT * FROM reservation WHERE rid = '"+rid+"' AND fname = '"+fname+"' AND lname = '"+lname+"' AND startDate = '"+sdate+"' AND endDate = '"+edate+"';")
         rows = cursor.fetchall()
@@ -149,7 +151,7 @@ def payment():
         cursor.close()
         code = ''
         for row in rows:
-            print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" ")
+            print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" "+str(row[6]))
             code = str(row[0])
 
         return render_template("payment-successful.html", code = code)
