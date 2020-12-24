@@ -166,6 +166,10 @@ def payment():
                 fname = fname, lname = lname, rid = rid, sdate = sdate, edate = edate, msg = "payment success"
             )
 
+@app.route("/report")
+def report():
+    return render_template("report.html")
+
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,90 @@
+<!-- Tanadon Sangkhatorn 6188060 -->
+<!-- Thanyanit Jongjitragan 6188075 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Report</title>
+        <style>
+
+            body {
+                background-image: url('https://www.hoteleurope.by/upload/resize_cache/iblock/644/1180_720_2/64481e396342be97f92dbbe2273f4005.jpg');
+                background-repeat: no-repeat;
+                background-size: 1750px 850px;
+                background-attachment: fixed;
+            }
+
+            
+            .font-freestyle-script {
+				font-family: "Freestyle Script";
+				}
+            .button1 {
+				background-color: #4CAF50;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 25px;
+				margin: 4px 2px;
+				cursor: pointer;
+			}
+        </style>
+    </head>
+    <body bgcolor="#E6F2FF">
+        <form action="/perday" method="post">
+            <!-- <fieldset align="center"> -->
+                <table border="1" bgcolor = "#FFFFFF" align="center">
+                    <tr><th>BOOKING PER DAY</th></tr>
+                    <tr>
+                        <td>
+                            <label for="startDate">Select date:</label>
+                            <input type="date" id="startDate" name="startDate">
+                            <input type="submit">
+                        </td>
+                    </tr>
+                </table>
+                <br>
+            <!-- </fieldset> -->
+        </form>
+
+        <form action="/permonth" method="post">
+            <!-- <fieldset align="center"> -->
+                <table border="1" bgcolor = "#FFFFFF" align="center">
+                    <tr><th>BOOKING PER MONTH<br></th></tr>
+                    <tr>
+                        <td>
+                            <label for="permonth">Select month:</label>
+                            <input type="month" id="permonth" name="permonth">
+                            <input type="submit">
+                        </td>
+                    </tr>                    
+                </table>
+                <br>
+            <!-- </fieldset> -->
+        </form>
+        
+        <form action="/roomstat" method="post">
+            <!-- <fieldset align="center"> -->
+                <table border="1" bgcolor = "#FFFFFF" align="center">
+                    <tr><th colspan="2">STATISTICS OF ROOM BOOKING</th></tr>
+                    <tr align="center">
+                        <td>
+                            <label for="sdate">From date:</label>
+                            <input type="date" id="sdate" name="sdate"><br>
+                        </td>
+                        <td align="center" rowspan="2">
+                            <input type="submit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="edate">To date:</label>
+                            <input type="date" id="edate" name="edate">
+                        </td>
+                    </tr>
+                </table>
+                <br>
+            <!-- </fieldset> -->
+        </form>
+    </body>
