@@ -143,14 +143,16 @@ def payment():
         cursor = mysql.connection.cursor()
         cursor.execute("INSERT INTO reservation (fname,lname,rid,startDate,endDate) VALUES ('"+fname+"','"+lname+"','"+rid+"','"+sdate+"','"+edate+"')")
         print("INSERT",cursor.rowcount,"row(s) of reservation.")
-        cursor.execute("SELECT * FROM reservation")
+        cursor.execute("SELECT * FROM reservation WHERE rid = '"+rid+"' AND fname = '"+fname+"' AND lname = '"+lname+"' AND startDate = '"+sdate+"' AND endDate = '"+edate+"';")
         rows = cursor.fetchall()
         mysql.connection.commit()
         cursor.close()
+        code = ''
         for row in rows:
             print(str(row[0])+" "+str(row[1])+" "+str(row[2])+" "+str(row[3])+" "+str(row[4])+" "+str(row[5])+" ")
+            code = str(row[0])
 
-        return render_template("payment-successful.html")
+        return render_template("payment-successful.html", code = code)
     
     else:
         fname = request.args.get('fname',None)
