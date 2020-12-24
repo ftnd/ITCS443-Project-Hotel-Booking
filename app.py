@@ -82,11 +82,12 @@ def booking():
 
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM room WHERE id NOT IN (SELECT rid FROM reservation WHERE startDate < '"+edate+"' AND endDate > '"+sdate+"');")
+    print("Read",cursor.rowcount,"row(s) of available room.")
     rows = cursor.fetchall()
     mysql.connection.commit()
     cursor.close()
-    print("Read",cursor.rowcount,"row(s) of available room.")
 
+    # Count available room for each room type
     for row in rows:
         if str(row[1]) == 'single':
             countSingle += 1
@@ -107,9 +108,28 @@ def booking():
             fname = fname, lname = lname,sdate = sdate, edate = edate, msg = msg
         )
 
-@app.route("/check-in")
+@app.route("/checkin",methods = ['POST', 'GET'])
 def checkin():
-    return render_template("check-in.html")
+    err = ''; msg=''
+    if request.method == 'POST':
+        fname = request.form['firstname']
+        lname = request.form['lastname']
+        code = request.form['code']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM reservation WHERE id = '"+code+"' AND fname = '"+fname+"' AND lname = '"+lname+"';")
+        print("Read",cursor.rowcount,"row(s) of reservation verification.")
+        rows = cursor.fetchall()
+        mysql.connection.commit()
+        cursor.close()
+
+        if cursor.rowcount == 1:
+            for row in rows:
+                msg = "Check-in SUCCESS. Your room number is "+str(row[3])+". Please check-out before "+str(row[5])+". Enjoy your stay!"
+        else:
+            err = "Check-in fail"
+            
+    return render_template("check-in.html",err=err,msg=msg)
 
 @app.route("/payment",methods = ['POST', 'GET'])
 def payment():

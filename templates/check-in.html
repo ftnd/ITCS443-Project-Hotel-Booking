@@ -30,7 +30,7 @@
         </style>
     </head>
     <body bgcolor="#E6F2FF">
-        <form action="/booking" method="post">
+        <form action="/checkin" method="post">
         <!-- <fieldset align="center"> -->
             <table border="1" bgcolor = "#FFFFFF" align="center">
                 <tr>
@@ -40,10 +40,18 @@
                 </tr>
                 <tr>
                     <td>
+                        Reservation Code
+                    </td>
+                    <td align="left">
+                        <input type="text" name="code" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         First name
                     </td>
                     <td align="left">
-                        <input type="text" name="firstname" pattern="[a-zA-Z]+" title="First name must contain only letters"><br>
+                        <input type="text" name="firstname" pattern="[a-zA-Z]+" title="First name must contain only letters" required><br>
                     </td>
                 </tr>
                 <tr>
@@ -51,35 +59,15 @@
                         Last name
                     </td>
                     <td align="left">
-                        <input type="text" name="lastname" pattern="[a-zA-Z]+" title="Last name must contain only letters"><br>
+                        <input type="text" name="lastname" pattern="[a-zA-Z]+" title="Last name must contain only letters" required><br>
                     </td>
                 </tr>
+            </table>
+            <table align="center">
                 <tr>
-                    <td>
-                        Check-in date
-                    </td>
-                    <td align="left">
-                        <input type="date" name="startDate">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Check-out date
-                    </td>
-
-                    <td align="left">
-                        <input type="date" name="endDate">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Room type
-                    </td>
-                    <td align="left">
-                        <input type="radio" name="RoomType" value="Single">Single<br>
-                        <input type="radio" name="RoomType" value="Double">Double<br>
-                        <input type="radio" name="RoomType" value="Suite">Suite<br>
-                        <input type="radio" name="RoomType" value="King">King<br>
+                    <td colspan="3">
+                        <p style="color:red">{{err}}</p>
+                        <p style="color:rgb(0, 140, 0)">{{msg}}</p>
                     </td>
                 </tr>
             </table>
@@ -89,5 +77,5 @@
                 <button type="reset" class="button1">Clear</button>
             </body>
         <!-- </fieldset> -->
-    </form>
+        </form>
     </body>
