@@ -1,0 +1,67 @@
+<!-- Tanadon Sangkhatorn 6188060 -->
+<!-- Thanyanit Jongjitragan 6188075 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Booking</title>
+        <style>
+
+            body {
+                background-image: url('https://www.hoteleurope.by/upload/resize_cache/iblock/644/1180_720_2/64481e396342be97f92dbbe2273f4005.jpg');
+                background-repeat: no-repeat;
+                background-size: 1750px 850px;
+                background-attachment: fixed;
+            }
+
+            
+            .font-freestyle-script {
+				font-family: "Freestyle Script";
+				}
+            .button1 {
+				background-color: #4CAF50;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 25px;
+				margin: 4px 2px;
+				cursor: pointer;
+			}
+        </style>
+    </head>
+    <body bgcolor="#E6F2FF">
+        <form action="/bookdate" method="post">
+        <!-- <fieldset align="center"> -->
+            <table border="1" bgcolor = "#FFFFFF" align="center">
+                <tr>
+                    <th colspan="3">
+                        <b><p class = 'font-freestyle-script' style="font-size:50px">BOOKING - select date</p></b>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Check-in date
+                    </td>
+                    <td align="left">
+                        <input type="date" name="startDate" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Check-out date
+                    </td>
+
+                    <td align="left">
+                        <input type="date" name="endDate" required>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <body align="center">
+                <button type="submit" class="button1">Submit</button>
+            </body>
+        <!-- </fieldset> -->
+    </form>
+    </body>

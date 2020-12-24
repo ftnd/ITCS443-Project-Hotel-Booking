@@ -31,7 +31,7 @@
         </style>
     </head>
     <body bgcolor="#E6F2FF">
-        <form action="/booking" method="post">
+        <form action="/payment" method="post">
         <!-- <fieldset align="center"> -->
             <table border="1" bgcolor = "#FFFFFF" align="center">
                 <tr>
@@ -40,47 +40,28 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        First name
-                    </td>
                     <td align="left">
-                        <input type="text" name="firstname" pattern="[a-zA-Z]+" title="First name must contain only letters" required><br>
+                        <input type="text" name="firstname" value = "{{fname}}" required><br>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        Last name
-                    </td>
                     <td align="left">
-                        <input type="text" name="lastname" pattern="[a-zA-Z]+" title="Last name must contain only letters" required><br>
+                        <input type="text" name="lastname" value = "{{lname}}" required><br>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        Check-in date
-                    </td>
                     <td align="left">
-                        <input type="date" name="startDate" required>
+                        <input type="text" name="startDate" value = "{{sdate}}" required>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        Check-out date
-                    </td>
-
                     <td align="left">
-                        <input type="date" name="endDate" required>
+                        <input type="text" name="endDate" value = "{{edate}}" required>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        Room type
-                    </td>
                     <td align="left">
-                        <input type="radio" name="RoomType" value="Single">Single<br>
-                        <input type="radio" name="RoomType" value="Double">Double<br>
-                        <input type="radio" name="RoomType" value="Suite">Suite<br>
-                        <input type="radio" name="RoomType" value="King">King<br>
+                        <input type="text" name="roomNO" value="{{rid}}">
                     </td>
                 </tr>
 
@@ -89,7 +70,7 @@
                         Card Number
                     </td>
                     <td align="left">
-                        <input id="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric" required><br>
+                        <input id="cardnumber" name="cardno" type="text" pattern="[0-9]*" inputmode="numeric" required><br>
                     </td>
                 </tr>
 
@@ -98,7 +79,7 @@
                         Expires date (MM/YY)
                     </td>
                     <td align="left">
-                        <input id="expirationdate" type="text" pattern="[0-9]*" inputmode="numeric" required>
+                        <input id="expirationdate" name="cardexp" type="text" pattern="[0-9]*" inputmode="numeric" required>
                     </td>
                 </tr>
 
@@ -107,7 +88,7 @@
                         CVV
                     </td>
                     <td align="left">
-                        <input id="cvv" type="password" pattern="[0-9]*" inputmode="numeric" required><br>
+                        <input id="cvv" name="cvv" type="password" pattern="[0-9]*" inputmode="numeric" required><br>
                     </td>
                 </tr>
                 

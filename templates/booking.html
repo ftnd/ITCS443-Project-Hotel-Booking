@@ -32,6 +32,40 @@
         </style>
     </head>
     <body bgcolor="#E6F2FF">
+        <form action="/bookdate" method="post">
+            <!-- <fieldset align="center"> -->
+                <table border="1" bgcolor = "#FFFFFF" align="center">
+                    <tr>
+                        <th colspan="3">
+                            <b><p class = 'font-freestyle-script' style="font-size:50px">Select date</p></b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Check-in date
+                        </td>
+                        <td align="left">
+                            <input type="date" name="startDate" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Check-out date
+                        </td>
+    
+                        <td align="left">
+                            <input type="date" name="endDate" required>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <body align="center">
+                    <button type="submit" class="button1">Submit</button>
+                    <button type="reset" class="button1">Clear</button>
+                </body>
+            <!-- </fieldset> -->
+        </form>
+
         <form action="/booking" method="post">
         <!-- <fieldset align="center"> -->
             <table border="1" bgcolor = "#FFFFFF" align="center">
