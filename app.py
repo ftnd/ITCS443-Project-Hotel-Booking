@@ -15,8 +15,8 @@ def days_count(d1, d2):
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'hotelmysql.mysql.database.azure.com'
-app.config['MYSQL_USER'] = 'hoteldb060075@hotelmysql'
-app.config['MYSQL_PASSWORD'] = 'Admin060075'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'hoteldb'
  
 mysql = MySQL(app)
